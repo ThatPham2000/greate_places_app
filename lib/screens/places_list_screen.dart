@@ -20,27 +20,36 @@ class PlacesListScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<GreatPlaces>(
-        builder: (ctx, greatPlaces, child) => greatPlaces.items.length <= 0
-            ? child != null
-                ? child
-                : Center(
-                    child: Text('No places added yet!'),
-                  )
-            : ListView.builder(
-                itemCount: greatPlaces.items.length,
-                itemBuilder: (ctx, i) => ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: FileImage(greatPlaces.items[i].image),
+      body: FutureBuilder(
+        future: Provider.of<GreatPlaces>(context, listen: false)
+            .FetchAndSetPlaces(),
+        builder: (ctx, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? Center(child: CircularProgressIndicator())
+                : Consumer<GreatPlaces>(
+                    builder: (ctx, greatPlaces, child) =>
+                        greatPlaces.items.length <= 0
+                            ? child != null
+                                ? child
+                                : Center(
+                                    child: Text('No places added yet!'),
+                                  )
+                            : ListView.builder(
+                                itemCount: greatPlaces.items.length,
+                                itemBuilder: (ctx, i) => ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage:
+                                        FileImage(greatPlaces.items[i].image),
+                                  ),
+                                  title: Text(greatPlaces.items[i].title),
+                                  // subtitle: Text(greatPlaces.items[i].location!.address!),
+                                  onTap: () {},
+                                ),
+                              ),
+                    child: Center(
+                      child: Text('No places added yet'),
+                    ),
                   ),
-                  title: Text(greatPlaces.items[i].title),
-                  // subtitle: Text(greatPlaces.items[i].location!.address!),
-                  onTap: () {},
-                ),
-              ),
-        child: Center(
-          child: Text('No places added yet'),
-        ),
       ),
     );
   }
