@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../providers/greate_places_provider.dart';
+import '../providers/great_places.dart';
 import 'package:provider/provider.dart';
 import './add_place_screen.dart';
 
@@ -22,7 +22,7 @@ class PlacesListScreen extends StatelessWidget {
       ),
       body: FutureBuilder(
         future: Provider.of<GreatPlaces>(context, listen: false)
-            .FetchAndSetPlaces(),
+            .fetchAndSetPlaces(),
         builder: (ctx, snapshot) =>
             snapshot.connectionState == ConnectionState.waiting
                 ? Center(child: CircularProgressIndicator())
